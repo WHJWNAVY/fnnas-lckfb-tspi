@@ -1365,4 +1365,201 @@ scheduler[0]: rga2
          load = 0%
 -----------------------------------
          process 1: pid = 1095, name: /usr/trim/bin/mediasrv -o /usr/trim/logs/mediasrv.log -a /var/run/mediasrv.socket
+
+root@LCTSPI:~# cat /proc/partitions
+major minor  #blocks  name
+
+ 179        0   15267840 mmcblk1
+ 179        1     368640 mmcblk1p1
+ 179        2   14688256 mmcblk1p2
+ 179       32       4096 mmcblk1boot0
+ 179       64       4096 mmcblk1boot1
+ 253        0    1008868 zram0
+   8        0  979369984 sda
+   8        1  979367936 sda1
+   9      127  979235840 md127
+ 254        0  979234816 dm-0
+
+root@LCTSPI:~# mount
+/dev/mmcblk1p2 on / type btrfs (rw,noatime,ssd,discard=async,space_cache=v2,subvolid=5,subvol=/)
+devtmpfs on /dev type devtmpfs (rw,relatime,size=874944k,nr_inodes=218736,mode=755,inode64)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,inode64)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+tmpfs on /run type tmpfs (rw,nosuid,nodev,size=403548k,nr_inodes=819200,mode=755,inode64)
+tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k,inode64)
+cgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot)
+none on /sys/fs/pstore type pstore (rw,nosuid,nodev,noexec,relatime)
+bpf on /sys/fs/bpf type bpf (rw,nosuid,nodev,noexec,relatime,mode=700)
+systemd-1 on /proc/sys/fs/binfmt_misc type autofs (rw,relatime,fd=29,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=10020)
+hugetlbfs on /dev/hugepages type hugetlbfs (rw,relatime,pagesize=2M)
+mqueue on /dev/mqueue type mqueue (rw,nosuid,nodev,noexec,relatime)
+debugfs on /sys/kernel/debug type debugfs (rw,nosuid,nodev,noexec,relatime)
+tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,nosuid,nodev,noexec,relatime)
+configfs on /sys/kernel/config type configfs (rw,nosuid,nodev,noexec,relatime)
+ramfs on /run/credentials/systemd-sysusers.service type ramfs (ro,nosuid,nodev,noexec,relatime,mode=700)
+ramfs on /run/credentials/systemd-tmpfiles-setup-dev.service type ramfs (ro,nosuid,nodev,noexec,relatime,mode=700)
+ramfs on /run/credentials/systemd-sysctl.service type ramfs (ro,nosuid,nodev,noexec,relatime,mode=700)
+tmpfs on /tmp type tmpfs (rw,nosuid,relatime,inode64)
+/dev/mmcblk1p1 on /boot type ext4 (rw,noatime,errors=remount-ro)
+ramfs on /run/credentials/systemd-tmpfiles-setup.service type ramfs (ro,nosuid,nodev,noexec,relatime,mode=700)
+binfmt_misc on /proc/sys/fs/binfmt_misc type binfmt_misc (rw,nosuid,nodev,noexec,relatime)
+sunrpc on /run/rpc_pipefs type rpc_pipefs (rw,relatime)
+trimafs on /fs type trimafs (rw,relatime,trimacl)
+tracefs on /sys/kernel/debug/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /run/user/0 type tmpfs (rw,nosuid,nodev,relatime,size=201772k,nr_inodes=50443,mode=700,inode64)
+tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,size=201772k,nr_inodes=50443,mode=700,uid=1000,gid=1001,inode64)
+/dev/mapper/trim_403c0264_b034_496f_b157_1bfd1488bc17-0 on /vol1 type ext4 (rw,relatime,trimacl,prjquota)
+
+root@LCTSPI:~# df -h
+Filesystem                                               Size  Used Avail Use% Mounted on
+/dev/mmcblk1p2                                            15G  2.4G   12G  18% /
+devtmpfs                                                 855M     0  855M   0% /dev
+tmpfs                                                    986M     0  986M   0% /dev/shm
+tmpfs                                                    395M  9.8M  385M   3% /run
+tmpfs                                                    5.0M     0  5.0M   0% /run/lock
+tmpfs                                                    986M  4.0K  986M   1% /tmp
+/dev/mmcblk1p1                                           336M   71M  244M  23% /boot
+trimafs                                                  930G   12G  917G   2% /fs
+tmpfs                                                    198M     0  198M   0% /run/user/0
+tmpfs                                                    198M     0  198M   0% /run/user/1000
+/dev/mapper/trim_403c0264_b034_496f_b157_1bfd1488bc17-0  930G   12G  917G   2% /vol1
+
+root@LCTSPI:~# lsblk
+NAME                                              MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda                                                 8:0    0   934G  0 disk
+└─sda1                                              8:1    0   934G  0 part
+  └─md127                                           9:127  0 933.9G  0 raid1
+    └─trim_403c0264_b034_496f_b157_1bfd1488bc17-0 254:0    0 933.9G  0 lvm   /vol1
+mmcblk1                                           179:0    0  14.6G  0 disk
+├─mmcblk1p1                                       179:1    0   360M  0 part  /boot
+└─mmcblk1p2                                       179:2    0    14G  0 part  /
+mmcblk1boot0                                      179:32   0     4M  1 disk
+mmcblk1boot1                                      179:64   0     4M  1 disk
+zram0                                             253:0    0 985.2M  0 disk  [SWAP]
+
+root@LCTSPI:~# free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       1.0Gi       185Mi        18Mi       831Mi       901Mi
+Swap:          985Mi       183Mi       801Mi
+
+root@LCTSPI:~# ifconfig
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        ether a2:20:7d:59:af:1e  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 24 overruns 0  carrier 0  collisions 0
+
+end0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.2.134  netmask 255.255.255.0  broadcast 192.168.2.255
+        inet6 fe80::2f7c:9ce:eb64:2ae0  prefixlen 64  scopeid 0x20<link>
+        ether 32:19:85:7c:96:e8  txqueuelen 1000  (Ethernet)
+        RX packets 925523  bytes 190396381 (181.5 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 289313  bytes 9309802098 (8.6 GiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device interrupt 90
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 4664  bytes 951294 (928.9 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 4664  bytes 951294 (928.9 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlan0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether a2:8f:62:eb:44:55  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 68 overruns 0  carrier 0  collisions 0
+
+root@LCTSPI:~# iperf3 -c 192.168.2.1 -P 4 -t 10 -i 1
+Connecting to host 192.168.2.1, port 5201
+[  5] local 192.168.2.134 port 37918 connected to 192.168.2.1 port 5201
+[  7] local 192.168.2.134 port 37934 connected to 192.168.2.1 port 5201
+[  9] local 192.168.2.134 port 37940 connected to 192.168.2.1 port 5201
+[ 11] local 192.168.2.134 port 37942 connected to 192.168.2.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  46.2 MBytes   388 Mbits/sec    0   1.13 MBytes
+[  7]   0.00-1.00   sec  28.9 MBytes   242 Mbits/sec    0    642 KBytes
+[  9]   0.00-1.00   sec  29.5 MBytes   247 Mbits/sec    0    741 KBytes
+[ 11]   0.00-1.00   sec  19.6 MBytes   164 Mbits/sec    0    468 KBytes
+[SUM]   0.00-1.00   sec   124 MBytes  1.04 Gbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   1.00-2.00   sec  37.5 MBytes   315 Mbits/sec    0   1.13 MBytes
+[  7]   1.00-2.00   sec  22.4 MBytes   188 Mbits/sec    0    642 KBytes
+[  9]   1.00-2.00   sec  28.8 MBytes   241 Mbits/sec    0    888 KBytes
+[ 11]   1.00-2.00   sec  23.7 MBytes   199 Mbits/sec    0    725 KBytes
+[SUM]   1.00-2.00   sec   112 MBytes   942 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   2.00-3.00   sec  37.5 MBytes   315 Mbits/sec    0   1.13 MBytes
+[  7]   2.00-3.00   sec  22.5 MBytes   189 Mbits/sec    0    642 KBytes
+[  9]   2.00-3.00   sec  30.0 MBytes   252 Mbits/sec    0    888 KBytes
+[ 11]   2.00-3.00   sec  22.5 MBytes   189 Mbits/sec    0    725 KBytes
+[SUM]   2.00-3.00   sec   112 MBytes   944 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   3.00-4.00   sec  37.5 MBytes   315 Mbits/sec    0   1.13 MBytes
+[  7]   3.00-4.00   sec  22.5 MBytes   189 Mbits/sec    0    642 KBytes
+[  9]   3.00-4.00   sec  30.0 MBytes   252 Mbits/sec    0    888 KBytes
+[ 11]   3.00-4.00   sec  22.5 MBytes   189 Mbits/sec    0    725 KBytes
+[SUM]   3.00-4.00   sec   112 MBytes   944 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   4.00-5.00   sec  32.5 MBytes   273 Mbits/sec    0   1.13 MBytes
+[  7]   4.00-5.00   sec  22.5 MBytes   189 Mbits/sec    0    833 KBytes
+[  9]   4.00-5.00   sec  36.2 MBytes   304 Mbits/sec    0   1.24 MBytes
+[ 11]   4.00-5.00   sec  21.2 MBytes   178 Mbits/sec    0    725 KBytes
+[SUM]   4.00-5.00   sec   112 MBytes   944 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   5.00-6.00   sec  32.5 MBytes   273 Mbits/sec    0   1.13 MBytes
+[  7]   5.00-6.00   sec  21.2 MBytes   178 Mbits/sec    0    833 KBytes
+[  9]   5.00-6.00   sec  36.2 MBytes   304 Mbits/sec    0   1.24 MBytes
+[ 11]   5.00-6.00   sec  22.5 MBytes   189 Mbits/sec    0    725 KBytes
+[SUM]   5.00-6.00   sec   112 MBytes   944 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   6.00-7.00   sec  32.5 MBytes   273 Mbits/sec    0   1.13 MBytes
+[  7]   6.00-7.00   sec  22.5 MBytes   189 Mbits/sec    0    833 KBytes
+[  9]   6.00-7.00   sec  36.2 MBytes   304 Mbits/sec    0   1.24 MBytes
+[ 11]   6.00-7.00   sec  21.2 MBytes   178 Mbits/sec    0    725 KBytes
+[SUM]   6.00-7.00   sec   112 MBytes   944 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   7.00-8.00   sec  31.2 MBytes   262 Mbits/sec    0   1.13 MBytes
+[  7]   7.00-8.00   sec  22.5 MBytes   189 Mbits/sec    0    833 KBytes
+[  9]   7.00-8.00   sec  36.2 MBytes   304 Mbits/sec    0   1.24 MBytes
+[ 11]   7.00-8.00   sec  22.5 MBytes   189 Mbits/sec    0    725 KBytes
+[SUM]   7.00-8.00   sec   112 MBytes   943 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   8.00-9.00   sec  32.5 MBytes   273 Mbits/sec    0   1.13 MBytes
+[  7]   8.00-9.00   sec  21.2 MBytes   178 Mbits/sec    0    833 KBytes
+[  9]   8.00-9.00   sec  36.2 MBytes   304 Mbits/sec    0   1.24 MBytes
+[ 11]   8.00-9.00   sec  21.2 MBytes   178 Mbits/sec    0    725 KBytes
+[SUM]   8.00-9.00   sec   111 MBytes   933 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[  5]   9.00-10.00  sec  32.5 MBytes   273 Mbits/sec    0   1.13 MBytes
+[  7]   9.00-10.00  sec  21.2 MBytes   178 Mbits/sec    0    833 KBytes
+[  9]   9.00-10.00  sec  36.2 MBytes   304 Mbits/sec    0   1.24 MBytes
+[ 11]   9.00-10.00  sec  22.5 MBytes   189 Mbits/sec    0    725 KBytes
+[SUM]   9.00-10.00  sec   112 MBytes   944 Mbits/sec    0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec   352 MBytes   296 Mbits/sec    0             sender
+[  5]   0.00-10.01  sec   350 MBytes   293 Mbits/sec                  receiver
+[  7]   0.00-10.00  sec   228 MBytes   191 Mbits/sec    0             sender
+[  7]   0.00-10.01  sec   225 MBytes   188 Mbits/sec                  receiver
+[  9]   0.00-10.00  sec   336 MBytes   282 Mbits/sec    0             sender
+[  9]   0.00-10.01  sec   333 MBytes   279 Mbits/sec                  receiver
+[ 11]   0.00-10.00  sec   220 MBytes   184 Mbits/sec    0             sender
+[ 11]   0.00-10.01  sec   216 MBytes   181 Mbits/sec                  receiver
+[SUM]   0.00-10.00  sec  1.11 GBytes   952 Mbits/sec    0             sender
+[SUM]   0.00-10.01  sec  1.10 GBytes   941 Mbits/sec                  receiver
+
+iperf Done.
+
 ```
